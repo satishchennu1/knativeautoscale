@@ -1,0 +1,60 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: autoscale-app
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        metadata:
+          annotations:
+            autoscaling.knative.dev/target: "10"
+        spec:
+          container:
+            image: "gcr.io/knative-samples/autoscale-go:0.1"
+apiVersion: serving.knative.dev/v1
+kind: Route
+metadata:
+  annotations:
+    serving.knative.dev/creator: kube:admin
+    serving.knative.dev/lastModifier: kube:admin
+  creationTimestamp: "2020-01-17T20:32:44Z"
+  generation: 1
+  labels:
+    serving.knative.dev/service: autoscale-app
+  name: autoscale-app
+  namespace: knativeautoscale
+  ownerReferences:
+  - apiVersion: serving.knative.dev/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Service
+    name: autoscale-app
+    uid: 84481e9a-3968-11ea-9e99-0a78efb9d405
+  resourceVersion: "100040386"
+  selfLink: /apis/serving.knative.dev/v1/namespaces/knativeautoscale/routes/autoscale-app
+  uid: 845bc701-3968-11ea-9e99-0a78efb9d405
+spec:
+  traffic:
+  - configurationName: autoscale-app
+    latestRevision: true
+    percent: 100
+status:
+  address:
+    url: http://autoscale-app.knativeautoscale.svc.cluster.local
+  conditions:
+  - lastTransitionTime: "2020-01-17T20:32:59Z"
+    status: "True"
+    type: AllTrafficAssigned
+  - lastTransitionTime: "2020-01-17T20:34:21Z"
+    status: "True"
+    type: IngressReady
+  - lastTransitionTime: "2020-01-17T20:34:21Z"
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  traffic:
+  - latestRevision: true
+    percent: 100
+    revisionName: autoscale-app-nmxwl
+  url: http://autoscale-app.knativeautoscale.apps.ocppilot.ocpcontainer.com
